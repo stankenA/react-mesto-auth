@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logoImg from '../images/logo.svg';
 import { Routes, Route, Link } from 'react-router-dom';
 
 export default function Header() {
+
+  const [isMobileOpened, setIsMobileOpened] = useState(false);
+
+  function toggleMobileMenu() {
+    setIsMobileOpened(!isMobileOpened);
+  }
+
   return (
-    <header className="header">
+    <header className={`header ${isMobileOpened && 'header_menu-opened'}`}>
       <div className="header__container">
         <div className="header__logo-container">
           <a href="#" className="header__link">
@@ -19,7 +26,7 @@ export default function Header() {
                     <p className="header__mail">email@mail.com</p>
                     <button type="button" className="header__logout">Выйти</button>
                   </div>
-                  <button type="button" className="header__btn"></button>
+                  <button type="button" className="header__btn" onClick={toggleMobileMenu}></button>
                 </>
               }
             />
