@@ -8,10 +8,11 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import { api } from '../utilis/Api';
+import { api } from '../utilis/api';
 import { UserContext } from '../contexts/CurrentUserContext';
 import ProtectedRoute from './ProtectedRoute';
-import SignForm from './SignForm';
+import Login from './Login';
+import Register from './Register';
 
 function App() {
 
@@ -21,6 +22,8 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false)
 
   // Стейты индентификаторов загрузки
   const [isLoadingProfilePopup, setIsLoadingProfilePopup] = useState(false);
@@ -65,6 +68,10 @@ function App() {
 
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
+  }
+
+  function handleInfoTooltipPopup() {
+    setIsInfoTooltipPopupOpen(true);
   }
 
   // Функция закрытия всех попапов
@@ -198,21 +205,11 @@ function App() {
             />
             <Route
               path="/sign-up"
-              element={<SignForm
-                title={'Регистрация'}
-                formType={'sign-up'}
-                btnTxt={'Зарегистрироваться'}
-                isRegistrationForm={true}
-              />}
+              element={<Register />}
             />
             <Route
               path="/sign-in"
-              element={<SignForm
-                title={'Вход'}
-                formType={'sign-in'}
-                btnTxt={'Войти'}
-                isRegistrationForm={false}
-              />}
+              element={<Login />}
             />
             <Route />
           </Routes>
