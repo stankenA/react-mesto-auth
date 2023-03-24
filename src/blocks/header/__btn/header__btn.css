@@ -1,0 +1,14 @@
+.header__btn {
+  display: block;
+  border: none;
+  background: url(../../../images/hamburger.svg) no-repeat center / contain;
+  width: 24px;
+  height: 18px;
+  display: none;
+}
+
+@media screen and (max-width: 450px) {
+  .header__btn {
+    display: block;
+  }
+}

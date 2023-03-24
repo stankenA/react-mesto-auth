@@ -1,0 +1,12 @@
+.header__logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 450px) {
+  .header__logo-container {
+    padding-top: 27px;
+    width: calc(100% - 38px);
+  }
+}
