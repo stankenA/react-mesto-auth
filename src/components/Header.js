@@ -26,7 +26,11 @@ export default function Header() {
                     <p className="header__mail">email@mail.com</p>
                     <button type="button" className="header__logout">Выйти</button>
                   </div>
-                  <button type="button" className="header__btn" onClick={toggleMobileMenu}></button>
+                  <button
+                    type="button"
+                    className={`header__btn ${isMobileOpened && 'header__btn_opened'}`}
+                    onClick={toggleMobileMenu}>
+                  </button>
                 </>
               }
             />
