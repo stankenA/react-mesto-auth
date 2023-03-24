@@ -10,8 +10,12 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import { api } from '../utilis/Api';
 import { UserContext } from '../contexts/CurrentUserContext';
+import ProtectedRoute from './ProtectedRoute';
+import SignForm from './SignForm';
 
 function App() {
+
+  const [loggedIn, setLoggedIn] = useState(true);
 
   // Стейты открытия/закрытия попапов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -175,15 +179,43 @@ function App() {
       <UserContext.Provider value={currentUser}>
         <div className="page">
           <Header />
-          <Main
-            cards={cards}
-            handleAddPlaceClick={handleAddPlaceClick}
-            handleEditAvatarClick={handleEditAvatarClick}
-            handleEditProfileClick={handleEditProfileClick}
-            handleCardClick={handleCardClick}
-            handleCardLike={handleCardLike}
-            handleCardDelete={handleCardDelete}
-          />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute
+                  element={Main}
+                  loggedIn={loggedIn}
+                  cards={cards}
+                  handleAddPlaceClick={handleAddPlaceClick}
+                  handleEditAvatarClick={handleEditAvatarClick}
+                  handleEditProfileClick={handleEditProfileClick}
+                  handleCardClick={handleCardClick}
+                  handleCardLike={handleCardLike}
+                  handleCardDelete={handleCardDelete}
+                />
+              }
+            />
+            <Route
+              path="/sign-up"
+              element={<SignForm
+                title={'Регистрация'}
+                formType={'sign-up'}
+                btnTxt={'Зарегистрироваться'}
+                isRegistrationForm={true}
+              />}
+            />
+            <Route
+              path="/sign-in"
+              element={<SignForm
+                title={'Вход'}
+                formType={'sign-in'}
+                btnTxt={'Войти'}
+                isRegistrationForm={false}
+              />}
+            />
+            <Route />
+          </Routes>
           <Footer />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}

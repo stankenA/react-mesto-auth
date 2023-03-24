@@ -9,3 +9,9 @@
   --content-width: 918px;
   min-height: 100vh;
 }
+
+@media screen and (max-width: 450px) {
+  .page {
+    padding-bottom: 143px;
+  }
+}

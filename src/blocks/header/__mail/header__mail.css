@@ -3,13 +3,8 @@
   font-size: 18px;
   line-height: 22px;
   color: #fff;
-  text-decoration: none;
-  margin-right: 24px;
+  margin: 0 24px 0 0;
   transition: all .4s ease;
-}
-
-.header__mail:hover {
-  opacity: .6;
 }
 
 @media screen and (max-width: 450px) {
