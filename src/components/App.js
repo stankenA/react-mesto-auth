@@ -23,12 +23,11 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false)
-
   // Стейты индентификаторов загрузки
   const [isLoadingProfilePopup, setIsLoadingProfilePopup] = useState(false);
   const [isLoadingAvatarPopup, setIsLoadingAvatarPopup] = useState(false);
   const [isLoadingAddPlacePopup, setIsLoadingAddPlacePopup] = useState(false);
+  const [infoTooltipOpened, setInfoTooltipOpened] = useState(false);
 
   // Стейт о текущей выбранной карте (для попапа с полноразмерной фоткой)
   const [selectedCard, setSelectedCard] = useState({});
@@ -70,8 +69,8 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
-  function handleInfoTooltipPopup() {
-    setIsInfoTooltipPopupOpen(true);
+  function handleTooltipInfoOpen() {
+    setInfoTooltipOpened(true);
   }
 
   // Функция закрытия всех попапов
@@ -80,6 +79,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setInfoTooltipOpened(false);
     setSelectedCard({});
   }
 
@@ -205,13 +205,22 @@ function App() {
             />
             <Route
               path="/sign-up"
-              element={<Register />}
+              element={
+                <Register
+                  handleTooltipOpen={handleTooltipInfoOpen}
+                  isOpen={infoTooltipOpened}
+                  onClose={closeAllPopups}
+                  onBgClose={handleBgClose}
+                />}
             />
             <Route
               path="/sign-in"
               element={<Login />}
             />
-            <Route />
+            <Route
+              path="*"
+              element={loggedIn ? <Navigate to="/" replace /> : <Navigate to="/sign-in" replace />}
+            />
           </Routes>
           <Footer />
           <EditProfilePopup
