@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import '../index.css';
 import Header from './Header';
 import Main from './Main';
@@ -13,10 +13,14 @@ import { UserContext } from '../contexts/CurrentUserContext';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
+import * as auth from '../utilis/auth';
 
 function App() {
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const navigate = useNavigate();
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState('');
 
   // Стейты открытия/закрытия попапов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -53,6 +57,25 @@ function App() {
       })
       .catch(err => console.log(err));
   }, [])
+
+  function handleTokenCheck() {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      auth.checkToken(jwt).then((res) => {
+        console.log(res);
+        if (res) {
+          setEmail(res.data.email);
+          setLoggedIn(true);
+          navigate("/", { replace: true })
+        }
+      });
+    }
+  }
+
+  useEffect(() => {
+    handleTokenCheck();
+  }, [loggedIn])
 
 
   // Функции открытия попапов
@@ -181,11 +204,22 @@ function App() {
       });
   }
 
+  // Логин
+
+  function handleLogin() {
+    setLoggedIn(true);
+  }
+
+  function handleLogOut() {
+    setLoggedIn(false);
+    setEmail('');
+  }
+
   return (
     <div className="App">
       <UserContext.Provider value={currentUser}>
         <div className="page">
-          <Header />
+          <Header email={email} handleSignOut={handleLogOut} />
           <Routes>
             <Route
               path="/"
@@ -215,7 +249,7 @@ function App() {
             />
             <Route
               path="/sign-in"
-              element={<Login />}
+              element={<Login handleLogin={handleLogin} />}
             />
             <Route
               path="*"

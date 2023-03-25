@@ -34,8 +34,8 @@ export const authorize = (password, email) => {
   })
     .then((res => res.json()))
     .then((data) => {
-      if (data.user) {
-        localStorage.setItem('jwt', data.jwt);
+      if (data.token) {
+        localStorage.setItem('jwt', data.token);
         return data;
       }
     })
@@ -45,8 +45,10 @@ export const authorize = (password, email) => {
 export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
   })
     .then(res => res.json())
     .then(data => data)

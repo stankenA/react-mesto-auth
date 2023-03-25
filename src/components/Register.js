@@ -6,7 +6,6 @@ import * as auth from '../utilis/auth';
 export default function Register({ handleTooltipOpen, onClose, isOpen, onBgClose }) {
 
   const [isRegistrationSuccessfull, setIsRegistrationSuccessfull] = useState(false);
-
   const [formValue, setFormValue] = useState({
     email: '',
     password: '',
@@ -23,12 +22,12 @@ export default function Register({ handleTooltipOpen, onClose, isOpen, onBgClose
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    console.log(formValue);
 
     auth.register(formValue.password, formValue.email)
       .then((res) => {
         if (res) {
           setIsRegistrationSuccessfull(true);
+          setFormValue({ email: '', password: '' })
         } else {
           setIsRegistrationSuccessfull(false);
         }

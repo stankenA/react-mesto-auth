@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import logoImg from '../images/logo.svg';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
-export default function Header() {
+export default function Header({ email, handleSignOut }) {
+
+  const navigate = useNavigate();
 
   const [isMobileOpened, setIsMobileOpened] = useState(false);
 
   function toggleMobileMenu() {
     setIsMobileOpened(!isMobileOpened);
+  }
+
+  function signOut() {
+    handleSignOut();
+    localStorage.removeItem('jwt');
+    navigate('/sign-in', { replace: true })
   }
 
   return (
@@ -23,8 +31,8 @@ export default function Header() {
               element={
                 <>
                   <div className="header__user">
-                    <p className="header__mail">email@mail.com</p>
-                    <button type="button" className="header__logout">Выйти</button>
+                    <p className="header__mail">{email}</p>
+                    <button type="button" className="header__logout" onClick={signOut}>Выйти</button>
                   </div>
                   <button
                     type="button"
