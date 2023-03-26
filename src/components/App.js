@@ -8,6 +8,7 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import InfoTooltip from './InfoTooltip';
 import { api } from '../utilis/api';
 import { UserContext } from '../contexts/CurrentUserContext';
 import ProtectedRoute from './ProtectedRoute';
@@ -21,6 +22,9 @@ function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
+
+  // Стейт регистрации
+  const [isRegistrationSuccessfull, setIsRegistrationSuccessfull] = useState(false);
 
   // Стейты открытия/закрытия попапов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -58,6 +62,7 @@ function App() {
       .catch(err => console.log(err));
   }, [])
 
+  // Проверка токена пользователя
   function handleTokenCheck() {
     const jwt = localStorage.getItem('jwt');
 
@@ -76,6 +81,40 @@ function App() {
     handleTokenCheck();
   }, [loggedIn])
 
+  // Регистрация пользователя
+  function handleRegistration(password, email) {
+    auth.register(password, email)
+      .then((res) => {
+        console.log(res)
+        if (res) {
+          setIsRegistrationSuccessfull(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsRegistrationSuccessfull(false);
+      })
+      .finally(() => handleTooltipOpen())
+  }
+
+  // Логин/логаут
+
+  function handleLogin(password, email) {
+    auth.authorize(password, email)
+      .then((data) => {
+        if (data.token) {
+          setLoggedIn(true);
+          navigate('/', { replace: true });
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  function handleLogOut() {
+    setLoggedIn(false);
+    setEmail('');
+  }
+
 
   // Функции открытия попапов
 
@@ -91,7 +130,7 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
-  function handleTooltipInfoOpen() {
+  function handleTooltipOpen() {
     setInfoTooltipOpened(true);
   }
 
@@ -204,17 +243,6 @@ function App() {
       });
   }
 
-  // Логин
-
-  function handleLogin() {
-    setLoggedIn(true);
-  }
-
-  function handleLogOut() {
-    setLoggedIn(false);
-    setEmail('');
-  }
-
   return (
     <div className="App">
       <UserContext.Provider value={currentUser}>
@@ -241,10 +269,8 @@ function App() {
               path="/sign-up"
               element={
                 <Register
-                  handleTooltipOpen={handleTooltipInfoOpen}
-                  isOpen={infoTooltipOpened}
-                  onClose={closeAllPopups}
-                  onBgClose={handleBgClose}
+                  handleRegistration={handleRegistration}
+                  isRegistrationSuccessfull={isRegistrationSuccessfull}
                 />}
             />
             <Route
@@ -257,6 +283,12 @@ function App() {
             />
           </Routes>
           <Footer />
+          <InfoTooltip
+            onClose={closeAllPopups}
+            onBgClose={handleBgClose}
+            isOpen={infoTooltipOpened}
+            isSuccesfull={isRegistrationSuccessfull}
+          />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}

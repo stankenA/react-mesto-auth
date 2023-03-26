@@ -1,32 +1,24 @@
-import React, { useState } from 'react';
-import InfoTooltip from './InfoTooltip';
+import React, { useEffect } from 'react';
 import SignForm from './SignForm';
-import * as auth from '../utilis/auth';
 import { useForm } from '../hooks/useForm';
 
-export default function Register({ handleTooltipOpen, onClose, isOpen, onBgClose }) {
-
-  const [isRegistrationSuccessfull, setIsRegistrationSuccessfull] = useState(false);
+export default function Register({ handleRegistration, isRegistrationSuccessfull }) {
 
   const { values, handleChange, setValues } = useForm({
     email: '',
     password: '',
   });
 
+  // Очищаем поля формы, если регистрация прошла успешно
+  // useEffect(() => {
+  //   isRegistrationSuccessfull && setValues({ email: '', password: '' });
+  // }, [isRegistrationSuccessfull])
+
   function handleSubmit(evt) {
     evt.preventDefault();
 
-    auth.register(values.password, values.email)
-      .then((res) => {
-        if (res) {
-          setIsRegistrationSuccessfull(true);
-          setValues({ email: '', password: '' })
-        } else {
-          setIsRegistrationSuccessfull(false);
-        }
-      })
-      .catch((err) => console.log(err))
-      .finally(() => handleTooltipOpen())
+    handleRegistration(values.password, values.email);
+    // TODO: придумать, как очищать поля формы после успешной регистрации
   }
 
   return (
@@ -38,12 +30,6 @@ export default function Register({ handleTooltipOpen, onClose, isOpen, onBgClose
         isRegistrationForm={true}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-      />
-      <InfoTooltip
-        onClose={onClose}
-        onBgClose={onBgClose}
-        isOpen={isOpen}
-        isSuccesfull={isRegistrationSuccessfull}
       />
     </>
   )
