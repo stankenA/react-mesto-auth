@@ -14,6 +14,7 @@ export default function Header({ email, handleSignOut }) {
 
   function signOut() {
     handleSignOut();
+    setIsMobileOpened(false);
     localStorage.removeItem('jwt');
     navigate('/sign-in', { replace: true })
   }
