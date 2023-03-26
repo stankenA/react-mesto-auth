@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function SignForm({ title, formType, btnTxt, isRegistrationForm, handleChange, handleSubmit }) {
+
+  const [emailValue, setEmailValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
+
+  function handleEmailChange(evt) {
+    setEmailValue(evt.target.value);
+    handleChange(evt);
+  }
+
+  function handlePasswordChange(evt) {
+    setPasswordValue(evt.target.value);
+    handleChange(evt);
+  }
 
   return (
     <div className="sign">
@@ -15,7 +28,8 @@ export default function SignForm({ title, formType, btnTxt, isRegistrationForm, 
             className="sign__input"
             required
             placeholder="Email"
-            onChange={handleChange}
+            onChange={handleEmailChange}
+            value={emailValue}
           />
           <input
             type="password"
@@ -24,7 +38,8 @@ export default function SignForm({ title, formType, btnTxt, isRegistrationForm, 
             required
             className="sign__input"
             placeholder="Пароль"
-            onChange={handleChange}
+            onChange={handlePasswordChange}
+            value={passwordValue}
           />
         </fieldset>
         <button type="submit" className="sign__submit">{btnTxt}</button>
