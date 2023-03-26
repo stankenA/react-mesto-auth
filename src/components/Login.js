@@ -1,35 +1,27 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SignForm from './SignForm';
-import * as auth from '../utilis/auth'
+import * as auth from '../utilis/auth';
+import { useForm } from '../hooks/useForm';
 
 export default function Login({ handleLogin }) {
 
   const navigate = useNavigate();
 
-  const [formValue, setFormValue] = useState({
+  const { values, handleChange, setValues } = useForm({
     email: '',
     password: '',
-  })
-
-  function handleChange(evt) {
-    const { name, value } = evt.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value
-    });
-  }
+  });
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (!formValue.password || !formValue.email) {
+    if (!values.password || !values.email) {
       return;
     }
-    auth.authorize(formValue.password, formValue.email)
+    auth.authorize(values.password, values.email)
       .then((data) => {
         if (data.token) {
-          setFormValue({ email: '', password: '' });
+          setValues({ email: '', password: '' });
           handleLogin();
           navigate('/', { replace: true });
         }

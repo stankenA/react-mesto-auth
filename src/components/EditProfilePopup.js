@@ -42,11 +42,33 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoad
       submitButtonText={isLoading ? 'Сохранение...' : 'Сохранить'}
       onBgClose={onBgClose}
     >
-      <input type="text" id="name-input" className="popup__input popup__input_type_name" placeholder="Имя" name="name"
-        required minLength="2" maxLength="40" autoComplete="off" value={name} onChange={handleNameChange} />
+      <input
+        type="text"
+        id="name-input"
+        className="popup__input popup__input_type_name"
+        placeholder="Имя"
+        name="name"
+        required
+        minLength="2"
+        maxLength="40"
+        autoComplete="off"
+        value={name || ''}
+        onChange={handleNameChange}
+      />
       <span className="popup__input-error name-input-error"></span>
-      <input type="text" id="about-input" className="popup__input popup__input_type_description" placeholder="О себе"
-        name="about" required minLength="2" maxLength="200" autoComplete="off" value={description} onChange={handleDescriptionChange} />
+      <input
+        type="text"
+        id="about-input"
+        className="popup__input popup__input_type_description"
+        placeholder="О себе"
+        name="about"
+        required
+        minLength="2"
+        maxLength="200"
+        autoComplete="off"
+        value={description || ''}
+        onChange={handleDescriptionChange}
+      />
       <span className="popup__input-error about-input-error"></span>
     </PopupWithForm>
   )
