@@ -116,21 +116,22 @@ function App() {
 
   // Закрытие попапов на Esc
 
-  function handleEscClose(evt) {
-    if (evt.key === 'Escape') {
-      closeAllPopups();
-      console.log('boop')
-    }
-  }
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard.link
+    || infoTooltipOpened
 
   useEffect(() => {
-    if (isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen) {
-      document.addEventListener('keydown', handleEscClose)
+    function closeByEscape(evt) {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
     }
-    return () => {
-      document.removeEventListener('keydown', handleEscClose)
+    if (isOpen) { // навешиваем только при открытии
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      }
     }
-  }, [isEditProfilePopupOpen, isEditAvatarPopupOpen, isAddPlacePopupOpen])
+  }, [isOpen])
 
   // Функция обработки клика по изображению
 
