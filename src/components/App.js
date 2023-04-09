@@ -16,16 +16,6 @@ import Login from './Login';
 import Register from './Register';
 import * as auth from '../utilis/auth';
 
-{/* Геннадий, хотел поблагодарить Вас за Вашу мега классную работу!
-    Вы очень крутой ревьюер. Всегда на первой итерации держу кулачки, чтобы попасть к Вам
-    От ребят из нашей когорты тоже большой привет :)
-
-    Хотел также поинтересоваться: от других слышал, что Вы иногда в качестве "можно лучше"
-    скидывали кастомный хук валидации. Я правильно понимаю, что на основе useForm такой хук
-    и можно будет создать? Если такой вопрос расценивается как обращение за помощью,
-    то можете его проигнорировать.
- */}
-
 function App() {
 
   const navigate = useNavigate();
@@ -93,12 +83,12 @@ function App() {
   }, [loggedIn])
 
   // Регистрация пользователя
-  function handleRegistration(password, email) {
+  function handleRegistration(password, email, clearForm) {
     auth.register(password, email)
       .then((res) => {
-        console.log(res)
         if (res) {
           setIsRegistrationSuccessfull(true);
+          clearForm();
         }
       })
       .catch((err) => {
@@ -281,7 +271,6 @@ function App() {
               element={
                 <Register
                   handleRegistration={handleRegistration}
-                  isRegistrationSuccessfull={isRegistrationSuccessfull}
                 />}
             />
             <Route
