@@ -31,6 +31,6 @@
 
 ## Ссылки
 
-**Демо**: https://stankena.github.io/react-mesto-auth/
+**Демо**: https://stankena.github.io/react-mesto-auth
 
 **Версия на ванильном JS** https://github.com/stankenA/mesto
